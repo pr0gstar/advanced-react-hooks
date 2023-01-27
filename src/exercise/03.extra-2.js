@@ -19,11 +19,6 @@ import {useAsync} from '../utils'
 
 const PokemonCacheContext = React.createContext()
 
-function PokemonCacheProvider(props) {
-  const [cache, dispatch] = React.useReducer(pokemonCacheReducer, {})
-  return <PokemonCacheContext.Provider value={[cache, dispatch]} {...props} />
-}
-
 function pokemonCacheReducer(state, action) {
   switch (action.type) {
     case 'ADD_POKEMON': {
@@ -35,12 +30,17 @@ function pokemonCacheReducer(state, action) {
   }
 }
 
+function PokemonCacheProvider(props) {
+  const [cache, dispatch] = React.useReducer(pokemonCacheReducer, {})
+  return <PokemonCacheContext.Provider value={[cache, dispatch]} {...props} />
+}
+
 function usePokemonCache() {
-  const pokemonCacheContext = React.useContext(PokemonCacheContext)
-  if (!pokemonCacheContext) {
+  const context = React.useContext(PokemonCacheContext)
+  if (!context) {
     throw new Error('useCount must be used within a CountProvider')
   }
-  return pokemonCacheContext
+  return context
 }
 
 function PokemonInfo({pokemonName}) {
